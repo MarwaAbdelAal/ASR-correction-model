@@ -1,4 +1,4 @@
-Apply automatic speech recognition model on a dataset of audio files and make any needed correction on the text generated. 
+Apply automatic speech recognition model on a dataset of audio files and make any needed correction on the text generated.
 
 
 # Requirements

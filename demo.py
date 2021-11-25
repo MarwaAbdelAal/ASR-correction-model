@@ -1,11 +1,15 @@
 from jiwer import wer
 from speech_engine import DataLoader, SpeechEngine
 
+import numpy as np 
+import matplotlib.pyplot as plt
+
 data_loader = DataLoader()
 engine = SpeechEngine()
 
 raw_wer = []
 corrected_wer = []
+data_size = []
 
 for i in range(len(data_loader)):
     
@@ -15,6 +19,7 @@ for i in range(len(data_loader)):
     text_corrected = engine.auto_correct(text_raw)
     raw_wer.append(wer(text_i, text_raw))
     corrected_wer.append(wer(text_i, text_corrected))
+    data_size.append(i)
 
 
 avg_raw_wer = sum(raw_wer)/len(raw_wer)
@@ -24,3 +29,15 @@ print(f'avg corr wer: {avg_corr_wer:.2f}')
 print('--'*10)
 print('raw wers :', ','.join([str(round(i, 2)) for i in raw_wer]))
 print('corr wers:', ','.join([str(round(i, 2)) for i in corrected_wer]))
+
+X_axis = np.arange(len(data_loader))
+
+plt.bar(X_axis - 0.2, raw_wer, 0.4, label = 'asr_wer')
+plt.bar(X_axis + 0.2, corrected_wer, 0.4, label = 'corr_wer')
+
+plt.xticks(X_axis, data_size)
+plt.xlabel("Audio files")
+plt.ylabel("WER")
+plt.title("WER after speech and correction models")
+plt.legend()
+plt.show()

@@ -1,5 +1,6 @@
 asrecognition==0.0.4
 jiwer==2.3.0
+matplotlib==3.5.0
 neuspell==1.0.0
 openpyxl==3.0.9
 pip-chill==1.0.1

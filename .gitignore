@@ -1,0 +1,3 @@
+venv
+speech_engine/__pycache__/
+subwordbert-probwordnoise
