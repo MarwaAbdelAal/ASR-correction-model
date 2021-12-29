@@ -3,6 +3,7 @@ from pathlib import Path
 import pandas as pd
 from datasets import load_dataset
 import soundfile as sf
+import re
 
 # get the path of assets (audio-files and transcripts)
 ASSETS_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'assets')
@@ -15,8 +16,9 @@ class DataLoader():
     
     def __init__(self, use_local=True) -> None:
         if use_local:
-            self._audio_files = sorted(Path(AUDIO_FILES_PATH).glob('*.wav'), key=lambda x:x.name)
+            self._audio_files = sorted(Path(AUDIO_FILES_PATH).glob('*.wav'), key=lambda x:float(re.findall("(\d+)",x.name)[0]))
             self._transcripts = pd.read_excel(TRANSCRIPTS_PATH)['Reference'].values.tolist()
+            self._transcripts = [each_string.upper() for each_string in self._transcripts]
             if len(self._audio_files) != len(self._transcripts):
                 raise Exception(f'Found {len(self._audio_files)} audio files and {len(self._transcripts)} transcription, they dont match')
         else:
@@ -42,4 +44,4 @@ class DataLoader():
         if (id < 0) or (id > len(self._audio_files)):
             return
 
-        return str(self._audio_files[id]), self._transcripts[id]
+        return str(self._audio_files[id]), self._transcripts[id].upper()
